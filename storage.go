@@ -19,14 +19,14 @@ type Storage interface {
 	// case the storage implementation wants to store its data as JSON
 	// strings.
 	Create(ctx context.Context, key, value string) error
-	// Create stores the given value under the given key. If the value
-	// under the key already exists Set overrides it. Keys and values might
+	// Put stores the given value under the given key. If the value
+	// under the key already exists Put overrides it. Keys and values might
 	// have specific schemes depending on the specific storage
 	// implementation.  E.g. an etcd storage implementation will allow keys
 	// to be defined as paths: path/to/key. Values might be JSON strings in
 	// case the storage implementation wants to store its data as JSON
 	// strings.
-	Set(ctx context.Context, key, value string) error
+	Put(ctx context.Context, key, value string) error
 	// Delete removes the value stored under the given key.
 	Delete(ctx context.Context, key string) error
 	// Exists checks if a value under the given key exists or not.

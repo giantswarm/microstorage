@@ -39,6 +39,14 @@ type Storage struct {
 }
 
 func (s *Storage) Create(ctx context.Context, key, value string) error {
+	err := s.Put(ctx, key, value)
+	if err != nil {
+		return microerror.MaskAny(err)
+	}
+	return nil
+}
+
+func (s *Storage) Put(ctx context.Context, key, value string) error {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 

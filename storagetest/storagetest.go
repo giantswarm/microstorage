@@ -20,7 +20,13 @@ func Test(t *testing.T, storage microstorage.Storage) {
 		t.Fatal("expected", false, "got", true)
 	}
 
-	err = storage.Create(context.TODO(), key, value)
+	err = storage.Put(context.TODO(), key, value)
+	if err != nil {
+		t.Fatal("expected", nil, "got", err)
+	}
+
+	// Second Set call should pass.
+	err = storage.Put(context.TODO(), key, value)
 	if err != nil {
 		t.Fatal("expected", nil, "got", err)
 	}
