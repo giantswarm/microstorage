@@ -41,7 +41,7 @@ type Storage struct {
 func (s *Storage) Create(ctx context.Context, key, value string) error {
 	err := s.Put(ctx, key, value)
 	if err != nil {
-		return microerror.MaskAny(err)
+		return microerror.Mask(err)
 	}
 	return nil
 }
@@ -99,7 +99,7 @@ func (s *Storage) List(ctx context.Context, key string) ([]string, error) {
 	}
 
 	if len(list) == 0 {
-		return nil, microerror.MaskAnyf(microstorage.NotFoundError, key)
+		return nil, microerror.Maskf(microstorage.NotFoundError, key)
 	}
 
 	return list, nil
@@ -114,5 +114,5 @@ func (s *Storage) Search(ctx context.Context, key string) (string, error) {
 		return value, nil
 	}
 
-	return "", microerror.MaskAnyf(microstorage.NotFoundError, key)
+	return "", microerror.Maskf(microstorage.NotFoundError, key)
 }
