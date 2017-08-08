@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"path"
+	"sort"
 	"strings"
 	"sync/atomic"
 	"testing"
@@ -135,6 +136,8 @@ func testInvalidKey(t *testing.T, storage microstorage.Storage) {
 	)
 
 	keys := []string{
+		"",
+		"/",
 		"//",
 		"///",
 		"////",
@@ -198,9 +201,11 @@ func testList(t *testing.T, storage microstorage.Storage) {
 			"one",
 			"two",
 		}
+		sort.Strings(wkeys)
 
 		keys, err := storage.List(ctx, key0)
-		assert.Nil(t, err, "%s: key=%s", name, key0)
+		assert.NoError(t, err, "%s: key=%s", name, key0)
+		sort.Strings(keys)
 		assert.Equal(t, wkeys, keys, "%s: key=%s", name, key0)
 	}
 }
