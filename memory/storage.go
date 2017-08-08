@@ -95,7 +95,7 @@ func (s *Storage) List(ctx context.Context, key string) ([]string, error) {
 			continue
 		}
 
-		list = append(list, s.data[k])
+		list = append(list, k[i+1:])
 	}
 
 	if len(list) == 0 {
