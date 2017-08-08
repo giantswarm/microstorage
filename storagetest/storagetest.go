@@ -3,6 +3,7 @@ package storagetest
 import (
 	"context"
 	"fmt"
+	"path"
 	"strings"
 	"sync/atomic"
 	"testing"
@@ -174,7 +175,34 @@ func testInvalidKey(t *testing.T, storage microstorage.Storage) {
 }
 
 func testList(t *testing.T, storage microstorage.Storage) {
-	// TODO
+	var (
+		name = "testList"
+
+		ctx = context.TODO()
+
+		baseKey = name + "-key"
+		value   = name + "-value"
+	)
+
+	for _, key0 := range validKeyVariations(baseKey) {
+		key1 := path.Join(key0, "one")
+		key2 := path.Join(key0, "two")
+
+		err := storage.Create(ctx, key1, value)
+		assert.Nil(t, err, "%s: key=%s", name, key1)
+
+		err = storage.Create(ctx, key2, value)
+		assert.Nil(t, err, "%s: key=%s", name, key2)
+
+		wkeys := []string{
+			"one",
+			"two",
+		}
+
+		keys, err := storage.List(ctx, key0)
+		assert.Nil(t, err, "%s: key=%s", name, key0)
+		assert.Equal(t, wkeys, keys, "%s: key=%s", name, key0)
+	}
 }
 
 var validKeyVariationsIDGen int64
@@ -187,39 +215,14 @@ func validKeyVariations(key string) []string {
 		key = key[:len(key)-1]
 	}
 
-	key = fmt.Sprintf("%s-%04d", atomic.AddInt64(&validKeyVariationsIDGen, 1))
+	next := func() string {
+		return fmt.Sprintf("%s-%04d", key, atomic.AddInt64(&validKeyVariationsIDGen, 1))
+	}
 
 	return []string{
-		key,
-		"/" + key,
-		key + "/",
-		"/" + key + "/",
+		next(),
+		"/" + next(),
+		next() + "/",
+		"/" + next() + "/",
 	}
-}
-
-func TestValidKeyVariations(t *testing.T) {
-	oldValidKeyVariationsIDGen := validKeyVariationsIDGen
-	validKeyVariationsIDGen = 0
-	defer func() {
-		validKeyVariationsIDGen = oldValidKeyVariationsIDGen
-	}()
-
-	keys := []string{
-		"key",
-		"/key",
-		"key/",
-		"/key/",
-	}
-
-	for i, key := range keys {
-		got := validKeyVariations(key)
-		want := []string{
-			fmt.Sprintf("key-000%d", i+1),
-			fmt.Sprintf("/key-000%d", i+1),
-			fmt.Sprintf("key-000%d/", i+1),
-			fmt.Sprintf("/key-000%d/", i+1),
-		}
-		assert.Equal(t, want, got, "key=%s", key)
-	}
-
 }
