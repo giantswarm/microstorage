@@ -33,6 +33,13 @@ func Test_List(t *testing.T) {
 	if len(values) != 2 {
 		t.Fatal("expected", 2, "got", len(values))
 	}
+
+	if values[0] != val {
+		t.Fatal("expected", val, "got", values[0])
+	}
+	if values[1] != val {
+		t.Fatal("expected", val, "got", values[1])
+	}
 }
 
 func Test_List_Invalid(t *testing.T) {
