@@ -39,7 +39,14 @@ type Storage struct {
 }
 
 func (s *Storage) Create(ctx context.Context, key, value string) error {
-	err := s.Put(ctx, key, value)
+	var err error
+
+	key, err = microstorage.SanitizeKey(key)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	err = s.Put(ctx, key, value)
 	if err != nil {
 		return microerror.Mask(err)
 	}
@@ -47,6 +54,13 @@ func (s *Storage) Create(ctx context.Context, key, value string) error {
 }
 
 func (s *Storage) Put(ctx context.Context, key, value string) error {
+	var err error
+
+	key, err = microstorage.SanitizeKey(key)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
@@ -56,6 +70,13 @@ func (s *Storage) Put(ctx context.Context, key, value string) error {
 }
 
 func (s *Storage) Delete(ctx context.Context, key string) error {
+	var err error
+
+	key, err = microstorage.SanitizeKey(key)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
@@ -65,6 +86,13 @@ func (s *Storage) Delete(ctx context.Context, key string) error {
 }
 
 func (s *Storage) Exists(ctx context.Context, key string) (bool, error) {
+	var err error
+
+	key, err = microstorage.SanitizeKey(key)
+	if err != nil {
+		return false, microerror.Mask(err)
+	}
+
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
@@ -74,6 +102,13 @@ func (s *Storage) Exists(ctx context.Context, key string) (bool, error) {
 }
 
 func (s *Storage) List(ctx context.Context, key string) ([]string, error) {
+	var err error
+
+	key, err = microstorage.SanitizeKey(key)
+	if err != nil {
+		return nil, microerror.Mask(err)
+	}
+
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
@@ -106,6 +141,13 @@ func (s *Storage) List(ctx context.Context, key string) ([]string, error) {
 }
 
 func (s *Storage) Search(ctx context.Context, key string) (string, error) {
+	var err error
+
+	key, err = microstorage.SanitizeKey(key)
+	if err != nil {
+		return "", microerror.Mask(err)
+	}
+
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
