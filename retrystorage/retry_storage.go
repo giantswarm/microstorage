@@ -101,7 +101,7 @@ func (s *RetryStorage) Create(ctx context.Context, key, value string) error {
 		return err
 	}
 	notify := func(err error, delay time.Duration) {
-		s.logger.Log("warn", fmt.Sprintf("retrying create key=%s delay=%s", key, delay), "err", fmt.Sprintf("%#v", err))
+		s.logger.Log("warn", "retrying", "op", "create", "key", key, "delay", delay, "err", fmt.Sprintf("%#v", err))
 	}
 	err := backoff.RetryNotify(op, b, notify)
 	return microerror.Mask(err)
@@ -117,7 +117,7 @@ func (s *RetryStorage) Put(ctx context.Context, key, value string) error {
 		return err
 	}
 	notify := func(err error, delay time.Duration) {
-		s.logger.Log("warn", fmt.Sprintf("retrying put key=%s delay=%s", key, delay), "err", fmt.Sprintf("%#v", err))
+		s.logger.Log("warn", "retrying", "op", "put", "key", key, "delay", delay, "err", fmt.Sprintf("%#v", err))
 	}
 	err := backoff.RetryNotify(op, b, notify)
 	return microerror.Mask(err)
@@ -133,7 +133,7 @@ func (s *RetryStorage) Delete(ctx context.Context, key string) error {
 		return err
 	}
 	notify := func(err error, delay time.Duration) {
-		s.logger.Log("warn", fmt.Sprintf("retrying delete key=%s delay=%s", key, delay), "err", fmt.Sprintf("%#v", err))
+		s.logger.Log("warn", "retrying", "op", "delete", "key", key, "delay", delay, "err", fmt.Sprintf("%#v", err))
 	}
 	err := backoff.RetryNotify(op, b, notify)
 	return microerror.Mask(err)
@@ -151,7 +151,7 @@ func (s *RetryStorage) Exists(ctx context.Context, key string) (bool, error) {
 		return err
 	}
 	notify := func(err error, delay time.Duration) {
-		s.logger.Log("warn", fmt.Sprintf("retrying exists key=%s delay=%s", key, delay), "err", fmt.Sprintf("%#v", err))
+		s.logger.Log("warn", "retrying", "op", "exists", "key", key, "delay", delay, "err", fmt.Sprintf("%#v", err))
 	}
 	err := backoff.RetryNotify(op, b, notify)
 	return exists, microerror.Mask(err)
@@ -169,7 +169,7 @@ func (s *RetryStorage) List(ctx context.Context, key string) ([]string, error) {
 		return err
 	}
 	notify := func(err error, delay time.Duration) {
-		s.logger.Log("warn", fmt.Sprintf("retrying list key=%s delay=%s", key, delay), "err", fmt.Sprintf("%#v", err))
+		s.logger.Log("warn", "retrying", "op", "list", "key", key, "delay", delay, "err", fmt.Sprintf("%#v", err))
 	}
 	err := backoff.RetryNotify(op, b, notify)
 	return list, microerror.Mask(err)
@@ -187,7 +187,7 @@ func (s *RetryStorage) Search(ctx context.Context, key string) (string, error) {
 		return err
 	}
 	notify := func(err error, delay time.Duration) {
-		s.logger.Log("warn", fmt.Sprintf("retrying search key=%s delay=%s", key, delay), "err", fmt.Sprintf("%#v", err))
+		s.logger.Log("warn", "retrying", "op", "search", "key", key, "delay", delay, "err", fmt.Sprintf("%#v", err))
 	}
 	err := backoff.RetryNotify(op, b, notify)
 	return value, microerror.Mask(err)
