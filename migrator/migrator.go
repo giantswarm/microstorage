@@ -2,6 +2,7 @@ package migrator
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
@@ -43,44 +44,54 @@ func New(config Config) (*Migrator, error) {
 }
 
 func (m *Migrator) Migrate(ctx context.Context, dst, src microstorage.Storage) error {
-	keys, err := src.List(ctx, "/")
-	if microstorage.IsNotFound(err) {
-		return nil
-	} else if err != nil {
-		return microerror.Maskf(err, "listing keys of source storage")
-	}
+	var err error
 
-	// Check if the migration is already done.
+	m.logger.Log("debug", "checking if migraiton is already done")
 	{
 		v, err := dst.Search(ctx, migrationKey)
 		if microstorage.IsNotFound(err) {
 			// This means migration hasn't been done yet.
 		} else if err != nil {
-			return microerror.Maskf(err, "searching destination sotrage for migration key=%s", migrationKey)
-		} else {
-			if v == migrationVal {
-				return nil
-			}
+			return microerror.Maskf(err, "dst storage: searching key=%s", migrationKey)
+		} else if v == migrationVal {
+			m.logger.Log("info", "migration already done")
+			return nil
 		}
 	}
 
+	m.logger.Log("debug", "listing all keys")
+	var keys []string
+	{
+		keys, err = src.List(ctx, "/")
+		if microstorage.IsNotFound(err) {
+			m.logger.Log("debug", "src sotrage is empty")
+			keys = []string{} // The flow must continue so migration mark is set.
+		} else if err != nil {
+			return microerror.Maskf(err, "src storage: listing key=/")
+		}
+	}
+
+	m.logger.Log("debug", fmt.Sprintf("transfering %d entries", len(keys)))
 	for _, key := range keys {
 		v, err := src.Search(ctx, key)
 		if err != nil {
-			return microerror.Maskf(err, "getting key=%s value from source storage", key)
+			return microerror.Maskf(err, "src storage: getting key=%s", key)
 		}
 
 		err = dst.Put(ctx, key, v)
 		if err != nil {
-			return microerror.Maskf(err, "putting key=%s value to destination storage", key)
+			return microerror.Maskf(err, "dst storage: putting key=%s", key)
 		}
 	}
 
-	// Set the migration done mark.
-	err = dst.Put(ctx, migrationKey, migrationVal)
-	if err != nil {
-		return microerror.Maskf(err, "putting migraiton key=%s into the destination storage", migrationKey)
+	m.logger.Log("debug", "setting migration mark")
+	{
+		err = dst.Put(ctx, migrationKey, migrationVal)
+		if err != nil {
+			return microerror.Maskf(err, "dst storage: putting key=%s", migrationKey)
+		}
 	}
 
+	m.logger.Log("info", fmt.Sprintf("transfered %d entries", len(keys)))
 	return nil
 }
