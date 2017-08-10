@@ -42,7 +42,7 @@ func New(config Config) (*Migrator, error) {
 	return m, nil
 }
 
-func (m *Migrator) Migrate(ctx context.Context, src, dst microstorage.Storage) error {
+func (m *Migrator) Migrate(ctx context.Context, dst, src microstorage.Storage) error {
 	keys, err := src.List(ctx, "/")
 	if microstorage.IsNotFound(err) {
 		return nil
