@@ -9,7 +9,9 @@ import (
 
 func Migrate(ctx context.Context, src, dst microstorage.Storage) error {
 	keys, err := src.List(ctx, "/")
-	if err != nil {
+	if microstorage.IsNotFound(err) {
+		return nil
+	} else if err != nil {
 		return microerror.Maskf(err, "listing keys of source storage")
 	}
 
