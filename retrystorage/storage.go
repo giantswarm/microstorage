@@ -36,7 +36,7 @@ func (s *stoppingBackOff) Reset() {
 	s.Underlying.Reset()
 }
 
-type RetryStorageConfig struct {
+type Config struct {
 	// Dependencies.
 
 	Logger     micrologger.Logger
@@ -47,8 +47,8 @@ type RetryStorageConfig struct {
 	NewBackOffFunc func() backoff.BackOff
 }
 
-func DefaultConfig() RetryStorageConfig {
-	return RetryStorageConfig{
+func DefaultConfig() Config {
+	return Config{
 		// Dependencies.
 
 		Logger:     nil, // Required.
@@ -65,13 +65,13 @@ func DefaultConfig() RetryStorageConfig {
 	}
 }
 
-type RetryStorage struct {
+type Storage struct {
 	logger         micrologger.Logger
 	underlying     microstorage.Storage
 	newBackOffFunc func() backoff.BackOff
 }
 
-func New(config RetryStorageConfig) (*RetryStorage, error) {
+func New(config Config) (*Storage, error) {
 	if config.Logger == nil {
 		return nil, microerror.Maskf(invalidConfigError, "config.Logger is empty")
 	}
@@ -82,7 +82,7 @@ func New(config RetryStorageConfig) (*RetryStorage, error) {
 		return nil, microerror.Maskf(invalidConfigError, "config.NewBackOffFunc is empty")
 	}
 
-	s := &RetryStorage{
+	s := &Storage{
 		logger:         config.Logger,
 		underlying:     config.Underlying,
 		newBackOffFunc: config.NewBackOffFunc,
@@ -91,7 +91,7 @@ func New(config RetryStorageConfig) (*RetryStorage, error) {
 	return s, nil
 }
 
-func (s *RetryStorage) Create(ctx context.Context, key, value string) error {
+func (s *Storage) Create(ctx context.Context, key, value string) error {
 	b := s.newBackOffFunc()
 	op := func() error {
 		err := s.underlying.Create(ctx, key, value)
@@ -107,7 +107,7 @@ func (s *RetryStorage) Create(ctx context.Context, key, value string) error {
 	return microerror.Mask(err)
 }
 
-func (s *RetryStorage) Put(ctx context.Context, key, value string) error {
+func (s *Storage) Put(ctx context.Context, key, value string) error {
 	b := s.newBackOffFunc()
 	op := func() error {
 		err := s.underlying.Put(ctx, key, value)
@@ -123,7 +123,7 @@ func (s *RetryStorage) Put(ctx context.Context, key, value string) error {
 	return microerror.Mask(err)
 }
 
-func (s *RetryStorage) Delete(ctx context.Context, key string) error {
+func (s *Storage) Delete(ctx context.Context, key string) error {
 	b := s.newBackOffFunc()
 	op := func() error {
 		err := s.underlying.Delete(ctx, key)
@@ -139,7 +139,7 @@ func (s *RetryStorage) Delete(ctx context.Context, key string) error {
 	return microerror.Mask(err)
 }
 
-func (s *RetryStorage) Exists(ctx context.Context, key string) (bool, error) {
+func (s *Storage) Exists(ctx context.Context, key string) (bool, error) {
 	b := s.newBackOffFunc()
 	var exists bool
 	op := func() error {
@@ -157,7 +157,7 @@ func (s *RetryStorage) Exists(ctx context.Context, key string) (bool, error) {
 	return exists, microerror.Mask(err)
 }
 
-func (s *RetryStorage) List(ctx context.Context, key string) ([]string, error) {
+func (s *Storage) List(ctx context.Context, key string) ([]string, error) {
 	b := s.newBackOffFunc()
 	var list []string
 	op := func() error {
@@ -175,7 +175,7 @@ func (s *RetryStorage) List(ctx context.Context, key string) ([]string, error) {
 	return list, microerror.Mask(err)
 }
 
-func (s *RetryStorage) Search(ctx context.Context, key string) (string, error) {
+func (s *Storage) Search(ctx context.Context, key string) (string, error) {
 	b := s.newBackOffFunc()
 	var value string
 	op := func() error {
