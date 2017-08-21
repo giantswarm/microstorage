@@ -3,7 +3,7 @@ package memory
 import (
 	"testing"
 
-	"github.com/giantswarm/microstorage/storagetest"
+	"github.com/giantswarm/microstorage/microstoragetest"
 )
 
 func Test_Storage(t *testing.T) {
@@ -11,5 +11,5 @@ func Test_Storage(t *testing.T) {
 	if err != nil {
 		t.Fatal("expected", nil, "got", err)
 	}
-	storagetest.Test(t, storage)
+	microstoragetest.Test(t, storage)
 }

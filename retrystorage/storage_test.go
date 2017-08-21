@@ -5,7 +5,7 @@ import (
 
 	"github.com/giantswarm/micrologger"
 	"github.com/giantswarm/microstorage/memory"
-	"github.com/giantswarm/microstorage/storagetest"
+	"github.com/giantswarm/microstorage/microstoragetest"
 )
 
 func TestRetryStorage(t *testing.T) {
@@ -28,5 +28,5 @@ func TestRetryStorage(t *testing.T) {
 		t.Fatalf("unexpected error %#v", err)
 	}
 
-	storagetest.Test(t, storage)
+	microstoragetest.Test(t, storage)
 }

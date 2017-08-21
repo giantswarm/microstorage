@@ -1,4 +1,4 @@
-package storagetest
+package microstoragetest
 
 import (
 	"testing"
