@@ -7,8 +7,8 @@ import (
 	"github.com/giantswarm/microstorage/memory"
 )
 
-// Must creates a configured storage ready to be used in tests.
-func Must() microstorage.Storage {
+// New creates a configured storage ready to be used in tests.
+func New() microstorage.Storage {
 	config := memory.DefaultConfig()
 	storage, err := memory.New(config)
 	if err != nil {
