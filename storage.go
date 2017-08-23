@@ -9,7 +9,7 @@ import (
 // storage cares about are key-value pairs. Code making use of the storage
 // have to take care about specific types they care about them self.
 type Storage interface {
-	// Put stores the given value under the given key.
+	// Put stores the given value under the given key. If the value
 	// under the key already exists Put overrides it. Keys and values might
 	// have specific schemes depending on the specific storage
 	// implementation.  E.g. an etcd storage implementation will allow keys
