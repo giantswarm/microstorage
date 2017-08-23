@@ -38,21 +38,6 @@ type Storage struct {
 	mutex sync.Mutex
 }
 
-func (s *Storage) Create(ctx context.Context, key, value string) error {
-	var err error
-
-	key, err = microstorage.SanitizeKey(key)
-	if err != nil {
-		return microerror.Mask(err)
-	}
-
-	err = s.Put(ctx, key, value)
-	if err != nil {
-		return microerror.Mask(err)
-	}
-	return nil
-}
-
 func (s *Storage) Put(ctx context.Context, key, value string) error {
 	var err error
 

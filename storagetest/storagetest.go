@@ -153,7 +153,7 @@ func testInvalidKey(t *testing.T, storage microstorage.Storage) {
 	}
 
 	for _, key := range keys {
-		err := storage.Create(ctx, key, value)
+		err := storage.Put(ctx, key, value)
 		assert.NotNil(t, err, "%s key=%s", name, key)
 		assert.True(t, microstorage.IsInvalidKey(err), "%s: expected InvalidKeyError for key=%s", name, key)
 
@@ -196,10 +196,10 @@ func testList(t *testing.T, storage microstorage.Storage) {
 		key1 := path.Join(key0, "one")
 		key2 := path.Join(key0, "two")
 
-		err := storage.Create(ctx, key1, value)
+		err := storage.Put(ctx, key1, value)
 		assert.Nil(t, err, "%s: key=%s", name, key1)
 
-		err = storage.Create(ctx, key2, value)
+		err = storage.Put(ctx, key2, value)
 		assert.Nil(t, err, "%s: key=%s", name, key2)
 
 		wkeys := []string{
@@ -230,13 +230,13 @@ func testListNested(t *testing.T, storage microstorage.Storage) {
 		key2 := path.Join(key0, "nested/two")
 		key3 := path.Join(key0, "extremaly/nested/three")
 
-		err := storage.Create(ctx, key1, value)
+		err := storage.Put(ctx, key1, value)
 		assert.Nil(t, err, "%s: key=%s", name, key1)
 
-		err = storage.Create(ctx, key2, value)
+		err = storage.Put(ctx, key2, value)
 		assert.Nil(t, err, "%s: key=%s", name, key2)
 
-		err = storage.Create(ctx, key3, value)
+		err = storage.Put(ctx, key3, value)
 		assert.Nil(t, err, "%s: key=%s", name, key3)
 
 		keyAll := "/"
@@ -262,10 +262,10 @@ func testListInvalid(t *testing.T, storage microstorage.Storage) {
 		key1 := path.Join(key0, "one")
 		key2 := path.Join(key0, "two")
 
-		err := storage.Create(ctx, key1, value)
+		err := storage.Put(ctx, key1, value)
 		assert.Nil(t, err, "%s: key=%s", name, key1)
 
-		err = storage.Create(ctx, key2, value)
+		err = storage.Put(ctx, key2, value)
 		assert.Nil(t, err, "%s: key=%s", name, key2)
 
 		// baseKey is key0 prefix.

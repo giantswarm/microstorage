@@ -9,16 +9,6 @@ import (
 // storage cares about are key-value pairs. Code making use of the storage
 // have to take care about specific types they care about them self.
 type Storage interface {
-	// Create is deprecated in favour of Put. Its semantics is unspecified
-	// when the value of the key does not exist.
-	//
-	// Create stores the given value under the given key. Keys and values
-	// might have specific schemes depending on the specific storage
-	// implementation.  E.g. an etcd storage implementation will allow keys
-	// to be defined as paths: path/to/key. Values might be JSON strings in
-	// case the storage implementation wants to store its data as JSON
-	// strings.
-	Create(ctx context.Context, key, value string) error
 	// Put stores the given value under the given key. If the value
 	// under the key already exists Put overrides it. Keys and values might
 	// have specific schemes depending on the specific storage

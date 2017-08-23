@@ -91,22 +91,6 @@ func New(config Config) (*Storage, error) {
 	return s, nil
 }
 
-func (s *Storage) Create(ctx context.Context, key, value string) error {
-	b := s.newBackOffFunc()
-	op := func() error {
-		err := s.underlying.Create(ctx, key, value)
-		if microstorage.IsInvalidKey(err) || microstorage.IsNotFound(err) {
-			return backoff.Permanent(err)
-		}
-		return err
-	}
-	notify := func(err error, delay time.Duration) {
-		s.logger.Log("warning", "retrying", "op", "create", "key", key, "delay", delay, "err", fmt.Sprintf("%#v", err))
-	}
-	err := backoff.RetryNotify(op, b, notify)
-	return microerror.Mask(err)
-}
-
 func (s *Storage) Put(ctx context.Context, key, value string) error {
 	b := s.newBackOffFunc()
 	op := func() error {
