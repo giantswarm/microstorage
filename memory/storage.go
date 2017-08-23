@@ -39,28 +39,16 @@ type Storage struct {
 }
 
 func (s *Storage) Put(ctx context.Context, kv microstorage.KV) error {
-	var err error
-
-	kv.Key, err = microstorage.SanitizeKey(kv.Key)
-	if err != nil {
-		return microerror.Mask(err)
-	}
-
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
-	s.data[kv.Key] = kv.Val
+	s.data[kv.Key()] = kv.Val()
 
 	return nil
 }
 
-func (s *Storage) Delete(ctx context.Context, key string) error {
-	var err error
-
-	key, err = microstorage.SanitizeKey(key)
-	if err != nil {
-		return microerror.Mask(err)
-	}
+func (s *Storage) Delete(ctx context.Context, k microstorage.K) error {
+	key := k.Key()
 
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
@@ -70,13 +58,8 @@ func (s *Storage) Delete(ctx context.Context, key string) error {
 	return nil
 }
 
-func (s *Storage) Exists(ctx context.Context, key string) (bool, error) {
-	var err error
-
-	key, err = microstorage.SanitizeKey(key)
-	if err != nil {
-		return false, microerror.Mask(err)
-	}
+func (s *Storage) Exists(ctx context.Context, k microstorage.K) (bool, error) {
+	key := k.Key()
 
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
@@ -86,13 +69,8 @@ func (s *Storage) Exists(ctx context.Context, key string) (bool, error) {
 	return ok, nil
 }
 
-func (s *Storage) List(ctx context.Context, key string) ([]microstorage.KV, error) {
-	var err error
-
-	key, err = microstorage.SanitizeListKey(key)
-	if err != nil {
-		return nil, microerror.Mask(err)
-	}
+func (s *Storage) List(ctx context.Context, k microstorage.K) ([]microstorage.KV, error) {
+	key := k.Key()
 
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
@@ -102,7 +80,7 @@ func (s *Storage) List(ctx context.Context, key string) ([]microstorage.KV, erro
 		var list []microstorage.KV
 		for k, v := range s.data {
 			k = k[1:] // append a key without leading '/'.
-			list = append(list, microstorage.NewKV(k, v))
+			list = append(list, microstorage.MustKV(microstorage.NewKV(k, v)))
 		}
 		return list, nil
 	}
@@ -126,26 +104,21 @@ func (s *Storage) List(ctx context.Context, key string) ([]microstorage.KV, erro
 		}
 
 		k = k[i+1:]
-		list = append(list, microstorage.NewKV(k, v))
+		list = append(list, microstorage.MustKV(microstorage.NewKV(k, v)))
 	}
 
 	return list, nil
 }
 
-func (s *Storage) Search(ctx context.Context, key string) (microstorage.KV, error) {
-	var err error
-
-	key, err = microstorage.SanitizeKey(key)
-	if err != nil {
-		return microstorage.KV{}, microerror.Mask(err)
-	}
+func (s *Storage) Search(ctx context.Context, k microstorage.K) (microstorage.KV, error) {
+	key := k.Key()
 
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
 	value, ok := s.data[key]
 	if ok {
-		return microstorage.NewKV(key, value), nil
+		return microstorage.MustKV(microstorage.NewKV(key, value)), nil
 	}
 
 	return microstorage.KV{}, microerror.Maskf(microstorage.NotFoundError, "key=%s", key)
