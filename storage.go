@@ -12,17 +12,17 @@ var (
 	RootKey = K{key: "/"}
 )
 
-// K is an immuatable, valid key.
+// K is an immutable, valid key.
 type K struct {
 	key string
 }
 
-// NewK creates a new immutable key to quiery the Storage with.
+// NewK creates a new immutable key to query the Storage with.
 //
 // The key should take a format of path separated by slashes "/". E.g.
 // "/a/b/c".  The key is sanitized before querying the storage. I.e. leading
 // slash can be added and trailing slash can be removed.  E.g. "/a/b/c",
-// "a/b/c/", "a/b/c/", and "/a/b/c/" represent the same key.
+// "a/b/c/", "a/b/c", and "/a/b/c/" represent the same key.
 //
 // NewK may fail if the key is not valid. See SanitizeKey godoc to learn how
 // valid key looks like.
