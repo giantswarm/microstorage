@@ -20,8 +20,8 @@ type K struct {
 // NewK creates a new immutable key to query the Storage with.
 //
 // The key should take a format of path separated by slashes "/". E.g.
-// "/a/b/c".  The key is sanitized before querying the storage. I.e. leading
-// slash can be added and trailing slash can be removed.  E.g. "/a/b/c",
+// "/a/b/c". The key is sanitized before querying the storage. I.e. leading
+// slash can be added and trailing slash can be removed. E.g. "/a/b/c",
 // "a/b/c/", "a/b/c", and "/a/b/c/" represent the same key.
 //
 // NewK may fail if the key is not valid. See SanitizeKey godoc to learn how
@@ -39,7 +39,7 @@ func NewK(key string) (K, error) {
 }
 
 // MustK is a helper that wraps a call to a function returning (K, error) and
-// panics if the error is non-nil.  It is intended for use in variable
+// panics if the error is non-nil. It is intended for use in variable
 // initializations such as
 //	var k = microstorage.MustK(microstorage.NewK("key"))
 func MustK(k K, err error) K {
@@ -63,9 +63,9 @@ type KV struct {
 // NewKV creates a new immutable key-value pair to update Storage with.
 //
 // The key should take a format of path separated by slashes "/". E.g.
-// "/a/b/c".  The key is sanitized before inserting to the storage. I.e.
-// leading slash can be added and trailing slash can be removed.  E.g.
-// "/a/b/c", "a/b/c/", "a/b/c/", and "/a/b/c/" represent the same key.
+// "/a/b/c". The key is sanitized before inserting to the storage. I.e. leading
+// slash can be added and trailing slash can be removed. E.g. "/a/b/c",
+// "a/b/c/", "a/b/c", and "/a/b/c/" represent the same key.
 //
 // The val is an arbitrary value stored under the key.
 //
