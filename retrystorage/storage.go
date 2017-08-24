@@ -107,7 +107,7 @@ func (s *Storage) Put(ctx context.Context, kv microstorage.KV) error {
 	return microerror.Mask(err)
 }
 
-func (s *Storage) Delete(ctx context.Context, key string) error {
+func (s *Storage) Delete(ctx context.Context, key microstorage.K) error {
 	b := s.newBackOffFunc()
 	op := func() error {
 		err := s.underlying.Delete(ctx, key)
@@ -123,7 +123,7 @@ func (s *Storage) Delete(ctx context.Context, key string) error {
 	return microerror.Mask(err)
 }
 
-func (s *Storage) Exists(ctx context.Context, key string) (bool, error) {
+func (s *Storage) Exists(ctx context.Context, key microstorage.K) (bool, error) {
 	b := s.newBackOffFunc()
 	var exists bool
 	op := func() error {
@@ -141,7 +141,7 @@ func (s *Storage) Exists(ctx context.Context, key string) (bool, error) {
 	return exists, microerror.Mask(err)
 }
 
-func (s *Storage) List(ctx context.Context, key string) ([]microstorage.KV, error) {
+func (s *Storage) List(ctx context.Context, key microstorage.K) ([]microstorage.KV, error) {
 	b := s.newBackOffFunc()
 	var list []microstorage.KV
 	op := func() error {
@@ -159,7 +159,7 @@ func (s *Storage) List(ctx context.Context, key string) ([]microstorage.KV, erro
 	return list, microerror.Mask(err)
 }
 
-func (s *Storage) Search(ctx context.Context, key string) (microstorage.KV, error) {
+func (s *Storage) Search(ctx context.Context, key microstorage.K) (microstorage.KV, error) {
 	b := s.newBackOffFunc()
 	var value microstorage.KV
 	op := func() error {
