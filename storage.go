@@ -112,8 +112,8 @@ func (k KV) Key() string {
 	return k.key
 }
 
-// KeyNoLeadingSlash returns the actual sanitized key value with leading slash
-// stripped.
+// KeyNoLeadingSlashreturns the sanitized key associated with this key-value
+// pair with leading slash stripped.
 func (k KV) KeyNoLeadingSlash() string {
 	return k.key[1:]
 }
