@@ -37,7 +37,7 @@ func TestK_KeyNoLeadingSlash(t *testing.T) {
 		"/a/b/c/",
 	}
 	for _, key := range keys {
-		k := MustK(NewK("a/b/c/"))
+		k := MustK(NewK(key))
 		assert.Equal(t, "/a/b/c", k.Key(), "key=%s", key)
 		assert.Equal(t, "a/b/c", k.KeyNoLeadingSlash(), "key=%s", key)
 	}
@@ -74,7 +74,7 @@ func TestKV_KeyNoLeadingSlash(t *testing.T) {
 		"/a/b/c/",
 	}
 	for _, key := range keys {
-		kv := MustKV(NewKV("a/b/c/", "any-test-value"))
+		kv := MustKV(NewKV(key, "any-test-value"))
 		assert.Equal(t, "/a/b/c", kv.Key(), "key=%s", key)
 		assert.Equal(t, "a/b/c", kv.KeyNoLeadingSlash(), "key=%s", key)
 	}
