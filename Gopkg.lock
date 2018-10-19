@@ -48,6 +48,7 @@
   packages = [
     ".",
     "loggermeta",
+    "microloggertest",
   ]
   pruneopts = ""
   revision = "22dc3b5565d150e1f94fbed50df3baf6cd40fac9"
@@ -186,6 +187,7 @@
     "github.com/giantswarm/backoff",
     "github.com/giantswarm/microerror",
     "github.com/giantswarm/micrologger",
+    "github.com/giantswarm/micrologger/microloggertest",
     "github.com/prometheus/client_golang/prometheus",
     "github.com/stretchr/testify/assert",
     "github.com/stretchr/testify/require",
