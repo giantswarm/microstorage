@@ -3,5 +3,7 @@
 
 # microstorage
 
-Key-value storage abstraction library.
+Old key-value storage abstraction library that is used in Giant Swarm
+microservices. Main use-case for this is to provide abstraction between
+`crdstorage` and `memorystorage`.
 
