@@ -34,16 +34,15 @@
   revision = "4763148864dc4815b691a69b4f60b4f4a8f88dad"
 
 [[projects]]
-  branch = "master"
-  digest = "1:cbf0385ab93895081876e58911afea60304de4a1fc1edc4ebd8c490eb8f6858f"
+  digest = "1:98e9dc8d46288ca1cbcd2925710b5fc684514ddba062e109f35a40ad5e81de8f"
   name = "github.com/giantswarm/microerror"
   packages = ["."]
   pruneopts = ""
-  revision = "cb07ec533b5032add513abb1c4a886d7a19ddc69"
+  revision = "e8fe0fa9c0097ca80d8b773e1d728843447f9233"
+  version = "v0.1.0"
 
 [[projects]]
-  branch = "master"
-  digest = "1:0c5d336009b1a71d70621df2ec6027158b31f0de9de9e7ff093ddb74a2078935"
+  digest = "1:4c29007df9da78d6ea19867140d9460a8b63837334911d09a7e5018b77d85aac"
   name = "github.com/giantswarm/micrologger"
   packages = [
     ".",
@@ -51,7 +50,8 @@
     "microloggertest",
   ]
   pruneopts = ""
-  revision = "0926d9b7c5419173936b4556411a103bdf8d5966"
+  revision = "c4d217562e3d493e3ff571707346a5a2653475cb"
+  version = "v0.1.1"
 
 [[projects]]
   digest = "1:44ec1082ba97d89ce860abcc6ee3f0cf24e658d3efb8531b0f0a52f0781e4243"
