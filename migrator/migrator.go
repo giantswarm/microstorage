@@ -45,16 +45,14 @@ func (m *Migrator) Migrate(ctx context.Context, dst, src microstorage.Storage) e
 		m.logger.Log("debug", "src sotrage is empty")
 		return nil
 	} else if err != nil {
-		return microerror.Maskf(err, "src storage: listing key=/")
-	}
+		return microerror.Mask(err)	}
 
 	m.logger.Log("debug", fmt.Sprintf("transfering %d entries", len(kvs)))
 	var migrated int
 	for _, kv := range kvs {
 		exists, err := dst.Exists(ctx, kv.K())
 		if err != nil {
-			return microerror.Maskf(err, "dst storage: checking key=%s", kv.Key())
-		}
+			return microerror.Mask(err)		}
 
 		if exists {
 			continue
@@ -62,8 +60,7 @@ func (m *Migrator) Migrate(ctx context.Context, dst, src microstorage.Storage) e
 
 		err = dst.Put(ctx, kv)
 		if err != nil {
-			return microerror.Maskf(err, "dst storage: putting key=%s", kv.Key())
-		}
+			return microerror.Mask(err)		}
 		migrated++
 	}
 
