@@ -2,7 +2,9 @@ package microstorage
 
 import "github.com/giantswarm/microerror"
 
-var invalidConfigError = microerror.New("invalid config")
+var invalidConfigError = &microerror.Error{
+	Kind: "invalidConfigError",
+}
 
 // IsInvalidConfig asserts invalidConfigError.
 func IsInvalidConfig(err error) bool {
@@ -11,7 +13,9 @@ func IsInvalidConfig(err error) bool {
 
 // NotFoundError is exported as it is used by the interface implementations
 // in order to fulfil the API.
-var NotFoundError = microerror.New("not found")
+var NotFoundError = &microerror.Error{
+	Kind: "NotFoundError",
+}
 
 // IsNotFound asserts NotFoundError. The library user's code should use this
 // public key matcher to verify if some storage error is of type NotFoundError.
@@ -21,7 +25,9 @@ func IsNotFound(err error) bool {
 
 // InvalidKeyError is exported as it is used by the interface implementations
 // in order to fulfil the API.
-var InvalidKeyError = microerror.New("invalid key")
+var InvalidKeyError = &microerror.Error{
+	Kind: "InvalidKeyError",
+}
 
 // IsInvalidKey asserts InvalidKeyError. The library user's code should use
 // this public key matcher to verify if some storage error is of type
