@@ -48,6 +48,7 @@ func testBasicCRUD(t *testing.T, storage microstorage.Storage) {
 		require.True(t, microstorage.IsNotFound(err), "%s: key=%s expected IsNotFoundError", name, kv.Key)
 
 		err = storage.Put(ctx, kv)
+		require.NoError(t, err, "%s: kv=%#v", name, kv)
 
 		ok, err = storage.Exists(ctx, kv.K())
 		require.NoError(t, err, "%s: kv=%#v", name, kv)
@@ -256,9 +257,8 @@ func testListInvalid(t *testing.T, storage microstorage.Storage) {
 var validKeyVariationsIDGen int64
 
 func validKeyVariations(key string) []string {
-	if strings.HasPrefix(key, "/") {
-		key = key[1:]
-	}
+	key = strings.TrimPrefix(key, "/")
+
 	if strings.HasSuffix(key, "/") {
 		key = key[:len(key)-1]
 	}
