@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/giantswarm/micrologger/microloggertest"
+
 	"github.com/giantswarm/microstorage/memory"
 	"github.com/giantswarm/microstorage/storagetest"
 )

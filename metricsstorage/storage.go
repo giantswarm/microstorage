@@ -3,9 +3,9 @@ package metricsstorage
 import (
 	"context"
 
+	"github.com/giantswarm/microerror"
 	"github.com/prometheus/client_golang/prometheus"
 
-	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/microstorage"
 )
 

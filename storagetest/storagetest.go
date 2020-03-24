@@ -9,9 +9,10 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/giantswarm/microstorage"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/giantswarm/microstorage"
 )
 
 // Test is Storage conformance test.

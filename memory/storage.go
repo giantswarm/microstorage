@@ -7,6 +7,7 @@ import (
 	"sync"
 
 	"github.com/giantswarm/microerror"
+
 	"github.com/giantswarm/microstorage"
 )
 
