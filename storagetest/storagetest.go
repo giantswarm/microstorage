@@ -258,10 +258,7 @@ var validKeyVariationsIDGen int64
 
 func validKeyVariations(key string) []string {
 	key = strings.TrimPrefix(key, "/")
-
-	if strings.HasSuffix(key, "/") {
-		key = key[:len(key)-1]
-	}
+	key = strings.TrimSuffix(key, "/")
 
 	next := func() string {
 		return fmt.Sprintf("%s-%04d", key, atomic.AddInt64(&validKeyVariationsIDGen, 1))
