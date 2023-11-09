@@ -42,6 +42,7 @@ func NewK(key string) (K, error) {
 // MustK is a helper that wraps a call to a function returning (K, error) and
 // panics if the error is non-nil. It is intended for use in variable
 // initializations such as
+//
 //	var k = microstorage.MustK(microstorage.NewK("key"))
 func MustK(k K, err error) K {
 	if err != nil {
