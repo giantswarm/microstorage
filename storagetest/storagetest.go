@@ -32,8 +32,8 @@ func testBasicCRUD(t *testing.T, storage microstorage.Storage) {
 
 		ctx = context.TODO()
 
-		baseKey = name + "-key"
-		value   = name + "-value"
+		baseKey = name + "-key"   //nolint:goconst
+		value   = name + "-value" //nolint:goconst
 	)
 
 	for _, key := range validKeyVariations(baseKey) {
@@ -77,8 +77,8 @@ func testPutIdempotent(t *testing.T, storage microstorage.Storage) {
 
 		ctx = context.TODO()
 
-		baseKey        = name + "-key"
-		value          = name + "-value"
+		baseKey        = name + "-key"   //nolint:goconst
+		value          = name + "-value" //nolint:goconst
 		overridenValue = name + "-overriden-value"
 	)
 
@@ -125,7 +125,7 @@ func testDeleteNotExisting(t *testing.T, storage microstorage.Storage) {
 
 		ctx = context.TODO()
 
-		baseKey = name + "-key"
+		baseKey = name + "-key" //nolint:goconst
 	)
 
 	for _, key := range validKeyVariations(baseKey) {
@@ -141,8 +141,8 @@ func testList(t *testing.T, storage microstorage.Storage) {
 
 		ctx = context.TODO()
 
-		baseKey = name + "-key"
-		value   = name + "-value"
+		baseKey = name + "-key"   //nolint:goconst
+		value   = name + "-value" //nolint:goconst
 	)
 
 	for _, key0 := range validKeyVariations(baseKey) {
@@ -175,7 +175,7 @@ func testListEmpty(t *testing.T, storage microstorage.Storage) {
 
 		ctx = context.TODO()
 
-		baseKey = name + "-key"
+		baseKey = name + "-key" //nolint:goconst
 	)
 
 	for _, key := range validKeyVariations(baseKey) {
@@ -194,8 +194,8 @@ func testListNested(t *testing.T, storage microstorage.Storage) {
 
 		ctx = context.TODO()
 
-		baseKey = name + "-key"
-		value   = name + "-value"
+		baseKey = name + "-key"   //nolint:goconst
+		value   = name + "-value" //nolint:goconst
 	)
 
 	for _, key := range validKeyVariations(baseKey) {
@@ -225,8 +225,8 @@ func testListInvalid(t *testing.T, storage microstorage.Storage) {
 
 		ctx = context.TODO()
 
-		baseKey = name + "-key"
-		value   = name + "-value"
+		baseKey = name + "-key"   //nolint:goconst
+		value   = name + "-value" //nolint:goconst
 	)
 
 	for _, key0 := range validKeyVariations(baseKey) {
